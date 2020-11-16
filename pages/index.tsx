@@ -1,9 +1,12 @@
+import React from 'react'
 import Head from 'next/head'
+import useSWR from 'swr'
+import produce from 'immer'
+
 import Layout from '../components/Layout'
 import Movie from '../components/Movie'
 import fetcher from '../libs/fetch'
-import useSWR from 'swr'
-import produce from 'immer'
+import { useAuth } from '../contexts/auth'
 
 const requestUpdateMovieLikes = async (id: number) => {
   fetcher('/.netlify/functions/update-movie', {
@@ -13,11 +16,11 @@ const requestUpdateMovieLikes = async (id: number) => {
     }),
   })
 }
-
 const MovieInfos = () => {
   const { data, error, mutate } = useSWR('/.netlify/functions/movies', (url) =>
     fetcher(url)
   )
+  const { isLoggedIn } = useAuth()
 
   const handleLike = async (id: number) => {
     const movieIndexToUpdate = data.inovexMovies.findIndex(
@@ -41,12 +44,13 @@ const MovieInfos = () => {
             key={movie.id}
             id={movie.id}
             likes={movie.likes}
-            poster={movie['tmdb'].poster}
+            poster={movie['tmdb'].posterPath}
             title={movie['tmdb'].title}
+            voteCount={movie['tmdb'].voteCount}
             overview={movie['tmdb'].overview}
-            rating={movie['tmdb'].rating}
-            keywords={movie['tmdb'].keywords.slice(1, 6)}
-            onLikeMovie={handleLike}
+            rating={movie['tmdb'].voteAverage}
+            keywords={movie['tmdb'].genres.slice(1, 6)}
+            onLikeMovie={isLoggedIn ? handleLike : null}
           ></Movie>
         )
       })}

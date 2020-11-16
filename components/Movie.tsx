@@ -11,17 +11,19 @@ type MovieProps = {
   rating: number
   poster: string
   id: number
+  voteCount: number
   likes?: number
   keywords: KeyWord[]
-  onAddMovieToFavorites?: () => Promise<void>
+  onAddMovieToFavorites?: (id: number) => Promise<void>
   onLikeMovie?: (id: number) => Promise<void>
 }
 
 const Movie = ({
   id,
   title,
-  poster = 'https://picsum.photos/seed/picsum/200/300',
+  poster = 'https://image.tmdb.org/t/p/original/aGLWQtURfyQ467FMb8I9UWuMJjP.jpg',
   rating,
+  voteCount,
   overview,
   keywords,
   likes,
@@ -37,7 +39,7 @@ const Movie = ({
         layout="responsive"
         width={300}
         height={400}
-        src={poster}
+        src={`https://image.tmdb.org/t/p/original/${poster}`}
         alt={title}
       />
       <div className="px-6 py-4">
@@ -60,7 +62,7 @@ const Movie = ({
             />
           </svg>
           <span className="text-4xl text-indigo-400">{rating}</span>{' '}
-          <span className="text-lg text-gray-600">/ 10</span>
+          <span className="text-lg text-gray-600">/ {voteCount}</span>
         </div>
         <div className="flex items-center">
           <svg
@@ -89,11 +91,13 @@ const Movie = ({
           )
         })}
       </div>
-      <div className="flex mt-6 px-8 pb-8 justify-center mt-auto">
+      <div className="flex px-8 pb-8 justify-center mt-auto">
         {onAddMovieToFavorites ? (
           <button
-            onClick={onAddMovieToFavorites}
-            className="bg-grey-light shadow-lg hover:bg-grey text-gray-700 font-bold py-2 px-4 rounded inline-flex items-center uppercase bg-gray-200 rounded-lg"
+            onClick={() => {
+              onAddMovieToFavorites(id)
+            }}
+            className="bg-grey-light shadow-lg hover:bg-grey text-gray-700 font-bold py-2 px-4 inline-flex items-center uppercase bg-gray-200 rounded-lg"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -112,8 +116,9 @@ const Movie = ({
           </button>
         ) : (
           <button
+            disabled={!onLikeMovie}
             onClick={() => onLikeMovie(id)}
-            className="bg-grey-light shadow-lg hover:bg-grey text-gray-700 font-bold py-2 px-4 rounded inline-flex items-center uppercase bg-gray-200 rounded-lg"
+            className="bg-grey-light shadow-lg hover:bg-grey text-gray-700 font-bold py-2 px-4 inline-flex items-center uppercase bg-gray-200 rounded-lg"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

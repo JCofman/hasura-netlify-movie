@@ -8,17 +8,18 @@ exports.handler = async () => {
             likes
             id
             tmdb {
-              keywords {
-                name
-                id
-              }
               title
               overview
-              rating 
-              poster(size: Original)
+              posterPath
+              genres {
+                id
+                name
+              }
+              voteAverage
+              voteCount
             }
           }
-          }
+        }
         `,
   })
 

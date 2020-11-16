@@ -2,13 +2,16 @@
 import type { AppProps /*, AppContext */ } from 'next/app'
 import '../css/tailwind.css'
 import Nav from '../components/Nav'
+import { AuthProvider } from '../contexts/auth'
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
-    <>
-      <Nav></Nav>
-      <Component {...pageProps} />
-    </>
+    <AuthProvider>
+      <>
+        <Nav></Nav>
+        <Component {...pageProps} />
+      </>
+    </AuthProvider>
   )
 }
 

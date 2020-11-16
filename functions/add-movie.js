@@ -1,6 +1,6 @@
 const { query } = require('./utils/hasura')
 
-exports.handler = async (event) => {
+exports.handler = async (event, context) => {
   const { id } = JSON.parse(event.body)
   // eslint-disable-next-line no-undef
   const { user } = context.clientContext
@@ -16,10 +16,9 @@ exports.handler = async (event) => {
 
   const result = await query({
     query: `
-    mutation ($id: String!, $poster: String!, $tagline: String!, $title: String!) {
-      insert_movies_one(object: {id: $id, poster: $poster, tagline: $tagline, title: $title}) {
+    mutation ($id: String!) {
+      insert_inovex_movies_one(object: {id: $id, tmdb_id}) {
         id
-       
       }
     }
         `,
