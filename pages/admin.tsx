@@ -30,7 +30,6 @@ const MovieInfos = ({ movieName, onAddMovieToFavorites }) => {
         }),
       })
   )
-
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
   const withoutIncompleteMovieData = data.filter((dataItem) => {
@@ -59,7 +58,7 @@ const MovieInfos = ({ movieName, onAddMovieToFavorites }) => {
 
 const Admin = (): JSX.Element => {
   const [movieName, setMovieName] = React.useState('')
-  const { isLoggedIn, login } = useAuth()
+  const { isLoggedIn, user, login } = useAuth()
 
   const handleSubmit = (newMovieName) => {
     setMovieName(newMovieName)
@@ -68,11 +67,14 @@ const Admin = (): JSX.Element => {
   const handleReset = () => {
     setMovieName('')
   }
-  // todo
+
   const handleAddMovie = async (id: number) => {
     try {
       await fetcher('/.netlify/functions/add-movie', {
         method: 'POST',
+        headers: {
+          Authorization: `Bearer ${user.token.access_token}`,
+        },
         body: JSON.stringify({
           id: id,
         }),
@@ -85,7 +87,7 @@ const Admin = (): JSX.Element => {
     <>
       <Head>
         <title>Members Only</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" />
       </Head>
       <Layout>
         {isLoggedIn ? (
@@ -105,32 +107,38 @@ const Admin = (): JSX.Element => {
               <MovieForm movieName={movieName} onSubmit={handleSubmit} />
             </div>
             <hr className="mb-8" />
-            <div className="pokemon-info">
-              <ErrorBoundary
-                FallbackComponent={ErrorFallback}
-                onReset={handleReset}
-                resetKeys={[movieName]}
-              >
-                <Layout>
-                  {movieName.length > 0 ? (
-                    <MovieInfos
-                      movieName={movieName}
-                      onAddMovieToFavorites={handleAddMovie}
-                    />
-                  ) : (
-                    <div>Type to search for a movie</div>
-                  )}
-                </Layout>
-              </ErrorBoundary>
-            </div>
+            <ErrorBoundary
+              FallbackComponent={ErrorFallback}
+              onReset={handleReset}
+              resetKeys={[movieName]}
+            >
+              <Layout>
+                {movieName.length > 0 ? (
+                  <MovieInfos
+                    movieName={movieName}
+                    onAddMovieToFavorites={handleAddMovie}
+                  />
+                ) : (
+                  <div>Type to search for a movie</div>
+                )}
+              </Layout>
+            </ErrorBoundary>
           </div>
         ) : (
-          <button
-            className="bg-grey-light shadow-lg hover:bg-grey text-gray-700 font-bold py-2 px-4 rounded inline-flex items-center uppercase bg-gray-200 rounded-lg"
-            onClick={login}
-          >
-            Sign in
-          </button>
+          <div className="max-w-md w-full">
+            <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
+              Sign in to your account
+            </h2>
+            <p className="mt-2 text-center text-sm leading-5 text-gray-600">
+              You have to sign in to view the Admin Page
+            </p>
+            <button
+              className="bg-grey-light shadow-lg hover:bg-grey text-gray-700 font-bold py-2 px-4 inline-flex items-center uppercase bg-gray-200 rounded-lg"
+              onClick={login}
+            >
+              Sign in
+            </button>
+          </div>
         )}
       </Layout>
     </>

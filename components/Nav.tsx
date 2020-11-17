@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { Menu, Transition } from '@headlessui/react'
 
 import ProfileAvatar from './ProfileAvatar'
 import { useAuth } from '../contexts/auth'
@@ -64,12 +65,12 @@ const Nav = (): JSX.Element => {
             <div className="flex-shrink-0">
               <img
                 className="block lg:hidden h-8 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-mark-on-dark.svg"
-                alt="Workflow logo"
+                src="/logo.svg"
+                alt="movie logo"
               />
               <img
                 className="hidden lg:block h-8 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-logo-on-dark.svg"
+                src="/logo.svg"
                 alt="Workflow logo"
               />
             </div>
@@ -90,65 +91,91 @@ const Nav = (): JSX.Element => {
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <div className="ml-3 relative">
-              <ProfileAvatar email={user && user.email}></ProfileAvatar>
-              <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg">
-                <div
-                  className="py-1 rounded-md bg-white shadow-xs"
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="user-menu"
-                >
-                  {isLoggedIn ? (
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
-                      role="menuitem"
-                      onClick={() => logout()}
+              <Menu>
+                {({ open }) => (
+                  <>
+                    <Menu.Button aria-label="User menu" aria-haspopup="true">
+                      <ProfileAvatar email={user && user.email}></ProfileAvatar>
+                    </Menu.Button>
+
+                    <Transition
+                      show={open}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
                     >
-                      Sign out
-                    </a>
-                  ) : (
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
-                      role="menuitem"
-                      onClick={() => login()}
-                    >
-                      Sign in
-                    </a>
-                  )}
-                </div>
-              </div>
+                      <Menu.Items
+                        static
+                        className="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
+                      >
+                        {user && user.email ? (
+                          <div className="px-4 py-3">
+                            <p className="text-sm leading-5">Signed in as</p>
+                            <p className="text-sm font-medium leading-5 text-gray-900 truncate">
+                              {user && user.email}
+                            </p>
+                          </div>
+                        ) : (
+                          ''
+                        )}
+
+                        <div className="py-1">
+                          <Menu.Item>
+                            {({ active }) => {
+                              return (
+                                <>
+                                  {isLoggedIn ? (
+                                    <a
+                                      href="#"
+                                      className={`${
+                                        active
+                                          ? 'bg-gray-100 text-gray-900'
+                                          : 'text-gray-700'
+                                      } flex justify-between w-full px-4 py-2 text-sm leading-5 text-left`}
+                                      role="menuitem"
+                                      onClick={() => logout()}
+                                    >
+                                      Sign out
+                                    </a>
+                                  ) : (
+                                    <a
+                                      href="#"
+                                      className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+                                      role="menuitem"
+                                      onClick={() => login()}
+                                    >
+                                      Sign in
+                                    </a>
+                                  )}
+                                </>
+                              )
+                            }}
+                          </Menu.Item>
+                        </div>
+                      </Menu.Items>
+                    </Transition>
+                  </>
+                )}
+              </Menu>
             </div>
           </div>
         </div>
       </div>
-      <div className="hidden sm:hidden">
+      <div className="sm:hidden">
         <div className="px-2 pt-2 pb-3">
-          <a
-            href="#"
-            className="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out"
-          >
-            Dashboard
-          </a>
-          <a
-            href="#"
-            className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out"
-          >
-            Team
-          </a>
-          <a
-            href="#"
-            className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out"
-          >
-            Projects
-          </a>
-          <a
-            href="#"
-            className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out"
-          >
-            Calendar
-          </a>
+          <Link href="/">
+            <a className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">
+              Movies
+            </a>
+          </Link>
+          <Link href="/admin">
+            <a className="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 transition duration-150 ease-in-out">
+              Admin
+            </a>
+          </Link>
         </div>
       </div>
     </nav>

@@ -10,7 +10,7 @@ const { query } = require('../utils/hasura')
 const handler = async function (event) {
   const { user } = JSON.parse(event.body)
   const userRoles =
-    user.email.split('@')[1] === 'inovex.de' ? ['admin'] : ['user']
+    user.email.split('@')[1] === 'inovex.de' ? ['editor'] : ['user']
   const responseBody = {
     app_metadata: {
       roles: userRoles,

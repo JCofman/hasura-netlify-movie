@@ -33,6 +33,7 @@ const MovieInfos = () => {
 
     await requestUpdateMovieLikes(id)
   }
+
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
   const inovexFavoriteMovies = data.inovexMovies
@@ -63,7 +64,7 @@ export const Home = (): JSX.Element => {
     <>
       <Head>
         <title>inovex Movies</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" />
       </Head>
 
       <Layout>

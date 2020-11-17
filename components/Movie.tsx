@@ -62,8 +62,12 @@ const Movie = ({
             />
           </svg>
           <span className="text-4xl text-indigo-400">{rating}</span>{' '}
-          <span className="text-lg text-gray-600">/ {voteCount}</span>
+          <span className="text-lg text-gray-600">/ 10</span>
+          <span className="text-s text-gray-400">
+            Voted by <span className="text-indigo-400">{voteCount}</span> users
+          </span>
         </div>
+
         <div className="flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,6 +1,5 @@
 exports.handler = async (event, context) => {
   const { user } = context.clientContext
-
   if (user) {
     const userId = user.sub
     const roles = user.app_metadata.roles || []
