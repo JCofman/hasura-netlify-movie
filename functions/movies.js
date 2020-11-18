@@ -4,7 +4,7 @@ exports.handler = async () => {
   const data = await query({
     query: `
         query {
-          inovexMovies: inovex_movies {
+          inovexMovies: inovex_movies(order_by: {likes: desc}) {
             likes
             id
             tmdb {

@@ -109,7 +109,7 @@ const Nav = (): JSX.Element => {
                     >
                       <Menu.Items
                         static
-                        className="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
+                        className="z-10 absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
                       >
                         {user && user.email ? (
                           <div className="px-4 py-3">

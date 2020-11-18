@@ -3,6 +3,9 @@ const fetch = require('node-fetch')
 
 exports.handler = async (event) => {
   // Only allow POST
+  const hasuraEventPayload = JSON.parse(event.body)
+  // eslint-disable-next-line no-console
+  console.log(hasuraEventPayload.event.data.new)
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' }
   }

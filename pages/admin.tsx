@@ -1,13 +1,15 @@
 import React from 'react'
 import Head from 'next/head'
 import { useAuth } from '../contexts/auth'
+import { ErrorBoundary } from 'react-error-boundary'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import fetcher from '../libs/fetch'
 import MovieForm from '../components/MovieForm'
 import Movie from '../components/Movie'
 import Layout from '../components/Layout'
 import useSWR from 'swr'
-import { ErrorBoundary } from 'react-error-boundary'
 
 const ErrorFallback = ({ error, resetErrorBoundary }) => {
   return (
@@ -79,8 +81,9 @@ const Admin = (): JSX.Element => {
           id: id,
         }),
       })
+      toast('Added as favorite!', { type: 'success' })
     } catch (error) {
-      console.error(error)
+      toast(`Error somehting went wrong!`, { type: 'error' })
     }
   }
   return (
@@ -89,9 +92,10 @@ const Admin = (): JSX.Element => {
         <title>Members Only</title>
         <link rel="icon" href="/favicon.svg" />
       </Head>
+      <ToastContainer></ToastContainer>
       <Layout>
         {isLoggedIn ? (
-          <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:fpx-8">
             <div className="lg:text-center mt-8">
               <p className="text-base leading-6 text-indigo-600 font-semibold tracking-wide uppercase">
                 Movies
@@ -133,7 +137,7 @@ const Admin = (): JSX.Element => {
               You have to sign in to view the Admin Page
             </p>
             <button
-              className="bg-grey-light shadow-lg hover:bg-grey text-gray-700 font-bold py-2 px-4 inline-flex items-center uppercase bg-gray-200 rounded-lg"
+              className="transition duration-200 ease-in-out hover:bg-indigo-500 hover:text-white bg-grey-light shadow-lg hover:bg-grey text-gray-700 font-bold py-2 px-4 flex justify-items-center items-center uppercase bg-gray-200 rounded-lg mt-8 ml-auto mr-auto"
               onClick={login}
             >
               Sign in

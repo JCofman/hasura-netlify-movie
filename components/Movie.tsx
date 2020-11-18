@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import React from 'react'
 
 type KeyWord = {
   id: number
@@ -35,9 +35,7 @@ const Movie = ({
       key={id}
       className="max-w-sm border rounded-lg overflow-hidden shadow-lg flex flex-col"
     >
-      <Image
-        layout="responsive"
-        width={300}
+      <img
         height={400}
         src={`https://image.tmdb.org/t/p/original/${poster}`}
         alt={title}
@@ -62,7 +60,7 @@ const Movie = ({
             />
           </svg>
           <span className="text-4xl text-indigo-400">{rating}</span>{' '}
-          <span className="text-lg text-gray-600">/ 10</span>
+          <span className="text-lg text-gray-600">/ 10</span>{' '}
           <span className="text-s text-gray-400">
             Voted by <span className="text-indigo-400">{voteCount}</span> users
           </span>
@@ -121,8 +119,10 @@ const Movie = ({
         ) : (
           <button
             disabled={!onLikeMovie}
-            onClick={() => onLikeMovie(id)}
-            className="bg-grey-light shadow-lg hover:bg-grey text-gray-700 font-bold py-2 px-4 inline-flex items-center uppercase bg-gray-200 rounded-lg"
+            onClick={() => {
+              onLikeMovie(id)
+            }}
+            className="transition duration-200 ease-in-out hover:shadow-2xl  bg-grey-light shadow-lg hover:bg-grey text-gray-700 font-bold py-2 px-4 inline-flex items-center uppercase bg-gray-200 rounded-lg"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

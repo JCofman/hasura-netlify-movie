@@ -16,6 +16,7 @@ exports.handler = async (event, context) => {
     statusCode: 200,
     body: JSON.stringify({
       'X-Hasura-User-Id': 'anonymous',
+      'X-Hasura-Role': 'anonymous',
     }),
   }
 }

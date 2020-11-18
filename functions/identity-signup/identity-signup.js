@@ -36,6 +36,7 @@ const handler = async function (event) {
       email: user.email,
       name: user.user_metadata.full_name,
     },
+    asAdmin: true,
   })
 
   return {

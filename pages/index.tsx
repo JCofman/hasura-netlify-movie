@@ -37,24 +37,29 @@ const MovieInfos = () => {
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
   const inovexFavoriteMovies = data.inovexMovies
+
   return (
     <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
-      {inovexFavoriteMovies.map((movie) => {
-        return (
-          <Movie
-            key={movie.id}
-            id={movie.id}
-            likes={movie.likes}
-            poster={movie['tmdb'].posterPath}
-            title={movie['tmdb'].title}
-            voteCount={movie['tmdb'].voteCount}
-            overview={movie['tmdb'].overview}
-            rating={movie['tmdb'].voteAverage}
-            keywords={movie['tmdb'].genres.slice(1, 6)}
-            onLikeMovie={isLoggedIn ? handleLike : null}
-          ></Movie>
-        )
-      })}
+      {inovexFavoriteMovies.length <= 0 ? (
+        <div>No favorite Movies</div>
+      ) : (
+        inovexFavoriteMovies.map((movie) => {
+          return (
+            <Movie
+              key={movie.id}
+              id={movie.id}
+              likes={movie.likes}
+              poster={movie['tmdb'].posterPath}
+              title={movie['tmdb'].title}
+              voteCount={movie['tmdb'].voteCount}
+              overview={movie['tmdb'].overview}
+              rating={movie['tmdb'].voteAverage}
+              keywords={movie['tmdb'].genres.slice(1, 6)}
+              onLikeMovie={isLoggedIn ? handleLike : null}
+            ></Movie>
+          )
+        })
+      )}
     </div>
   )
 }
