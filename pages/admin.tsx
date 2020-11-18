@@ -34,6 +34,9 @@ const MovieInfos = ({ movieName, onAddMovieToFavorites }) => {
   )
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
+  if (data.length <= 0) {
+    return <div>nothing found</div>
+  }
   const withoutIncompleteMovieData = data.filter((dataItem) => {
     return Object.keys(dataItem).length > 0
   })
@@ -70,7 +73,13 @@ const Admin = (): JSX.Element => {
     setMovieName('')
   }
 
-  const handleAddMovie = async (id: number) => {
+  const handleAddMovie = async ({
+    id,
+    title,
+  }: {
+    id: number
+    title: string
+  }) => {
     try {
       await fetcher('/.netlify/functions/add-movie', {
         method: 'POST',
@@ -79,6 +88,7 @@ const Admin = (): JSX.Element => {
         },
         body: JSON.stringify({
           id: id,
+          title: title,
         }),
       })
       toast('Added as favorite!', { type: 'success' })

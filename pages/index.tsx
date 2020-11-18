@@ -8,9 +8,12 @@ import Movie from '../components/Movie'
 import fetcher from '../libs/fetch'
 import { useAuth } from '../contexts/auth'
 
-const requestUpdateMovieLikes = async (id: number) => {
+const requestUpdateMovieLikes = async (id: number, user: any) => {
   fetcher('/.netlify/functions/update-movie', {
     method: 'POST',
+    headers: {
+      Authorization: `Bearer ${user.token.access_token}`,
+    },
     body: JSON.stringify({
       id: id,
     }),
@@ -20,7 +23,7 @@ const MovieInfos = () => {
   const { data, error, mutate } = useSWR('/.netlify/functions/movies', (url) =>
     fetcher(url)
   )
-  const { isLoggedIn } = useAuth()
+  const { user, isLoggedIn } = useAuth()
 
   const handleLike = async (id: number) => {
     const movieIndexToUpdate = data.inovexMovies.findIndex(
@@ -31,7 +34,7 @@ const MovieInfos = () => {
     })
     mutate({ ...updatedData }, false)
 
-    await requestUpdateMovieLikes(id)
+    await requestUpdateMovieLikes(id, user)
   }
 
   if (error) return <div>failed to load</div>

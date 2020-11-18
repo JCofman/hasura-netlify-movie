@@ -14,12 +14,10 @@ const handler = async function (event) {
   const responseBody = {
     app_metadata: {
       roles: userRoles,
-      my_user_info: `this user has the following roles ${userRoles.join(', ')}`,
     },
     user_metadata: {
       // append current user metadata
       ...user.user_metadata,
-      custom_data_from_function: 'hurray this is some extra metadata',
     },
   }
   // create also hasura user
@@ -29,14 +27,12 @@ const handler = async function (event) {
   mutation MyMutation($id: String, $email: String, $name: String) {
     insert_users(objects: {id: $id, email: $email, name: $name }) {affected_rows}
   }
-
           `,
     variables: {
       id: user.id,
       email: user.email,
       name: user.user_metadata.full_name,
     },
-    asAdmin: true,
   })
 
   return {

@@ -14,7 +14,7 @@ type MovieProps = {
   voteCount: number
   likes?: number
   keywords: KeyWord[]
-  onAddMovieToFavorites?: (id: number) => Promise<void>
+  onAddMovieToFavorites?: ({ id: number, title: string }) => Promise<void>
   onLikeMovie?: (id: number) => Promise<void>
 }
 
@@ -26,7 +26,7 @@ const Movie = ({
   voteCount,
   overview,
   keywords,
-  likes,
+  likes = 0,
   onAddMovieToFavorites,
   onLikeMovie,
 }: MovieProps): JSX.Element => {
@@ -97,7 +97,7 @@ const Movie = ({
         {onAddMovieToFavorites ? (
           <button
             onClick={() => {
-              onAddMovieToFavorites(id)
+              onAddMovieToFavorites({ id, title })
             }}
             className="bg-grey-light shadow-lg hover:bg-grey text-gray-700 font-bold py-2 px-4 inline-flex items-center uppercase bg-gray-200 rounded-lg"
           >
