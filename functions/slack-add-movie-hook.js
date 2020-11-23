@@ -1,4 +1,3 @@
-const querystring = require('querystring')
 const fetch = require('node-fetch')
 
 exports.handler = async (event) => {
@@ -10,10 +9,7 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: 'Method Not Allowed' }
   }
 
-  // When the method is POST, the name will no longer be in the event’s
-  // queryStringParameters – it’ll be in the event body encoded as a queryString
-  const params = querystring.parse(event.body)
-  const name = params.name || 'World'
+  const name = hasuraEventPayload.event.data.new || 'World'
 
   // Send greeting to Slack
   return fetch(process.env.SLACK_WEBHOOK_URL, {
@@ -21,11 +17,11 @@ exports.handler = async (event) => {
       'content-type': 'application/json',
     },
     method: 'POST',
-    body: JSON.stringify({ text: `${name} says hello!` }),
+    body: JSON.stringify({ text: `Hello 👋, a new Movie got added ${name}!` }),
   })
     .then(() => ({
       statusCode: 200,
-      body: `Hello, ${name}! Your greeting has been sent to Slack 👋`,
+      body: `Add movie Slack message successfully send`,
     }))
     .catch((error) => ({
       statusCode: 422,
