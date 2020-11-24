@@ -9,7 +9,7 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: 'Method Not Allowed' }
   }
 
-  const name = hasuraEventPayload.event.data.new || 'World'
+  const name = hasuraEventPayload.event.data.new.title || 'World'
 
   // Send greeting to Slack
   return fetch(process.env.SLACK_WEBHOOK_URL, {

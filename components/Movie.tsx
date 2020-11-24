@@ -36,7 +36,8 @@ const Movie = ({
       className="max-w-sm border rounded-lg overflow-hidden shadow-lg flex flex-col"
     >
       <img
-        height={400}
+        style={{ objectFit: 'cover', height: ' 500px' }}
+        height={500}
         src={`https://image.tmdb.org/t/p/original/${poster}`}
         alt={title}
       />
